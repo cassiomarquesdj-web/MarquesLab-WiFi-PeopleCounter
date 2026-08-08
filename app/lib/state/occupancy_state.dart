@@ -19,10 +19,10 @@ class OccupancyState extends ChangeNotifier {
     var people = 0;
     var tick = 0;
     _subscription?.cancel();
-    _subscription = Stream.periodic(const Duration(seconds: 2)).listen((_) {
+    _subscription = Stream<OccupancySnapshot>.periodic(const Duration(seconds: 2), (_) {
       tick++;
       people = (people + (tick.isEven ? 7 : 3)) % 180;
-      snapshot = OccupancySnapshot(
+      return OccupancySnapshot(
         timestamp: DateTime.now(),
         people: people,
         enteringPerMinute: tick.isEven ? 12 : 8,
@@ -35,6 +35,8 @@ class OccupancyState extends ChangeNotifier {
         },
         activeSensors: 3,
       );
+    }).listen((next) {
+      snapshot = next;
       backendOnline = false;
       notifyListeners();
     });
