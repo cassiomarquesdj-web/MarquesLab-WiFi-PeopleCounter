@@ -1,0 +1,24 @@
+name: marqueslab_wifi_people_counter
+description: Painel Android para estimativa de ocupacao e fluxo por Wi-Fi Sensing / CSI.
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: '>=3.24.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+
+  # Estado e arquitetura serao adicionados conforme o MVP evoluir.
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
