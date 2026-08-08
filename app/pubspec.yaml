@@ -10,10 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.8
-
-  # Estado e arquitetura serao adicionados conforme o MVP evoluir.
+  http: ^1.2.2
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
