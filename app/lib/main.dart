@@ -7,7 +7,7 @@ import 'ui/dashboard_page.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (_) => OccupancyState()..startDemoStream(),
+      create: (_) => OccupancyState(),
       child: const PeopleCounterApp(),
     ),
   );
