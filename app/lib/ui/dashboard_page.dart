@@ -71,7 +71,7 @@ class _SystemBanner extends StatelessWidget {
     final text = demo ? 'MODO DEMONSTRAÇÃO' : (online ? 'ENGINE ONLINE' : 'AGUARDANDO ENGINE');
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(color: color.withOpacity(.08), borderRadius: BorderRadius.circular(12), border: Border.all(color: color.withOpacity(.25))),
+      decoration: BoxDecoration(color: color.withValues(alpha: .08), borderRadius: BorderRadius.circular(12), border: Border.all(color: color.withValues(alpha: .25))),
       child: Row(children: [Icon(Icons.circle, size: 10, color: color), const SizedBox(width: 10), Text(text, style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 12)), const Spacer(), const Text('CSI', style: TextStyle(color: Colors.white38, fontWeight: FontWeight.w700))]),
     );
   }
@@ -109,7 +109,7 @@ class _Metric extends StatelessWidget {
   const _Metric({required this.title, required this.value, required this.icon, required this.primary});
 
   @override
-  Widget build(BuildContext context) => Card(child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Icon(icon, color: primary, size: 20), const SizedBox(height: 10), Text(title, style: const TextStyle(color: Colors.white45, fontSize: 11, letterSpacing: 1)), const SizedBox(height: 4), Text(value, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800))])));
+  Widget build(BuildContext context) => Card(child: Padding(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Icon(icon, color: primary, size: 20), const SizedBox(height: 10), Text(title, style: const TextStyle(color: Colors.white54, fontSize: 11, letterSpacing: 1)), const SizedBox(height: 4), Text(value, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800))])));
 }
 
 class _ZonePanel extends StatelessWidget {
