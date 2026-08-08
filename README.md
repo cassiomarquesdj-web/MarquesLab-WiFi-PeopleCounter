@@ -1,70 +1,72 @@
 # MarquesLab WiFi People Counter
 
-Sistema experimental para estimativa de ocupacao e fluxo de pessoas em eventos usando Wi-Fi Sensing / CSI, sem camera e sem identificacao individual.
+Sistema experimental de **Wi-Fi Sensing / CSI** para transformar alterações do canal de rádio em uma visualização de presença e movimento. O objetivo é criar um monitor invisível, sem câmera, útil tanto para eventos quanto para segurança residencial.
 
-## Estado atual
-
-**MVP em desenvolvimento.** O repositorio ja possui a base integrada de firmware, engine Python e APK Flutter.
-
-### Componentes
+## O que estamos construindo
 
 ```text
-ESP32 CSI Sensors
-      ↓
-CSI / Signal Features
-      ↓
-Python Occupancy Engine
-      ↓
-HTTP API
-      ↓
-Flutter Android APK
-      ↓
-Dashboard de evento
+Wi-Fi / ESP32 CSI
+       ↓
+Amplitude + fase + RSSI
+       ↓
+Baseline + filtragem + detecção
+       ↓
+Mapa de intensidade CSI
+       ↓
+Fusão de múltiplos sensores
+       ↓
+Flutter Android
+       ↓
+Presença / movimento / ocupação / alertas
 ```
 
-## Estrutura
+A interface usa uma **paleta térmica** para representar a intensidade das alterações do sinal. Isso não é uma câmera térmica: são dados de rádio processados pelo algoritmo.
 
-- `app/` — aplicativo Flutter Android.
-- `backend/` — API e engine inicial de ocupacao.
-- `firmware/esp32/` — firmware base para captura CSI.
-- `ml/` — extracao de caracteristicas e classificacao inicial de atividade.
-- `docs/` — arquitetura e especificacoes.
-- `.github/workflows/` — CI para testes e build do APK.
+## Segurança residencial
 
-## Dashboard
+O APK possui um modo **Proteção Ativa** para uso como sensor invisível de presença/movimento. Quando armado, o sistema pode indicar:
 
-O APK ja possui:
+- ambiente livre;
+- presença detectada;
+- movimento detectado;
+- qualidade do sinal;
+- intensidade por região;
+- alerta de movimento.
 
-- pessoas presentes;
-- fluxo de entrada e saida;
-- confianca da estimativa;
-- ocupacao por Entrada, Pista e Camarote;
-- quantidade de sensores ativos;
-- modo demonstracao para validar a interface antes do hardware;
-- cliente HTTP para conectar ao engine.
+Para uma casa, o desenho recomendado é ter pelo menos dois pontos de rádio, permitindo observar alterações no caminho do sinal em mais de uma direção.
 
-## Sensor
+## Evento
 
-O firmware ESP32 ja possui o esqueleto de inicializacao e callback CSI. A proxima camada de hardware deve adicionar configuracao segura de Wi-Fi, identidade do sensor e envio dos frames normalizados ao backend.
+Para contagem de público, a arquitetura usa múltiplos sensores. Um único sensor consegue indicar presença/movimento, mas **não deve ser tratado como contador exato de pessoas**. A contagem de dezenas ou centenas de pessoas exige calibração e fusão espacial de vários sensores.
 
-## Engine
+## Componentes
 
-A API oferece:
+- `app/` — APK Flutter Android.
+- `backend/` — API FastAPI e engine CSI.
+- `firmware/esp32/` — captura CSI no ESP32.
+- `ml/` — espaço para modelos treinados.
+- `docs/` — arquitetura e testes.
+- `.github/workflows/` — CI e build do APK.
+
+## Hardware recomendado
+
+A família ESP32 suporta CSI. Para novos protótipos, ESP32-C5/C6 são opções especialmente interessantes para CSI; antena externa tende a facilitar testes por oferecer melhor diretividade. A documentação oficial da Espressif também fornece exemplos de recepção CSI, detecção humana e radar. cite-placeholder
+
+## API
 
 - `GET /health`
+- `POST /api/v1/calibration/reset`
 - `POST /api/v1/sensors/frame`
 - `GET /api/v1/occupancy`
 
-O algoritmo atual e propositalmente uma baseline. A contagem real deve ser calibrada com dados coletados no ambiente do evento e comparada com contagem manual/fluxo de entrada.
+## Calibração
 
-## Build
+A primeira etapa real é sempre **calibrar o ambiente vazio**. O baseline representa o canal sem pessoa. Depois, o engine mede a diferença em relação ao baseline e aplica filtragem temporal/histerese para reduzir falsos positivos.
 
-O GitHub Actions gera automaticamente um APK release quando houver push na `main`. O artefato fica disponivel na execucao do workflow.
+## Limitações importantes
 
-## Precisao
-
-Wi-Fi CSI detecta alteracoes na propagacao do sinal; nao existe uma conversao universal de amplitude para numero de pessoas. O produto final deve usar multiplos sensores, calibracao, filtragem temporal e fusao espacial para chegar a uma estimativa util para eventos.
+CSI pode detectar alterações causadas por pessoas, inclusive em ambientes onde não existe linha de visão direta, mas desempenho através de paredes depende fortemente de paredes, distância, frequência, antenas, posição dos sensores, tráfego Wi-Fi e ambiente. Não tratamos o mapa como uma imagem fotográfica nem prometemos visão perfeita através de qualquer parede.
 
 ## Privacidade
 
-O sistema foi desenhado para trabalhar com sinais agregados de presenca/movimento. Nao utiliza camera para identificar pessoas e nao precisa armazenar identidade individual.
+O projeto não precisa de câmera nem identificação individual. Os dados enviados ao engine são características do sinal e estados agregados de presença/movimento.
