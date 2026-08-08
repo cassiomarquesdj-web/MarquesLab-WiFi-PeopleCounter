@@ -50,7 +50,7 @@ Para contagem de público, a arquitetura usa múltiplos sensores. Um único sens
 
 ## Hardware recomendado
 
-A família ESP32 suporta CSI. Para novos protótipos, ESP32-C5/C6 são opções especialmente interessantes para CSI; antena externa tende a facilitar testes por oferecer melhor diretividade. A documentação oficial da Espressif também fornece exemplos de recepção CSI, detecção humana e radar. cite-placeholder
+A família ESP32 suporta CSI. Para novos protótipos, ESP32-C5/C6 são opções especialmente interessantes para CSI; antena externa tende a facilitar testes por oferecer melhor diretividade. A documentação oficial da Espressif também fornece exemplos de recepção CSI, detecção humana e radar.
 
 ## API
 
